@@ -1,0 +1,14 @@
+{
+  "name": "arcade-payments",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Бэкенд оплаты через ЮKassa для сайта с мини-играми",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
