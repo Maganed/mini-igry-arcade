@@ -3,111 +3,100 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Arcade — короткие игры в браузере</title>
-<meta name="description" content="Пять мини-игр без регистрации: Змейка, 2048, Тетрис, Мемори и тест реакции. Играйте на телефоне или компьютере." />
-<link rel="canonical" href="https://maganed.github.io/mini-igry-arcade/" />
+<title>Arcade — коллекция браузерных игр</title>
+<meta name="description" content="Восемь игр прямо в браузере: шутер, гонки, ферма, тетрис, 2048, змейка, мемори и тест реакции. Без регистрации." />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="favicon.svg" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="./">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-        <rect x="1.5" y="6.5" width="29" height="19" rx="6" fill="none" stroke="currentColor" stroke-width="2" />
-        <path d="M10 13v6M7 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        <circle cx="21.5" cy="14" r="1.9" fill="currentColor" />
-        <circle cx="25" cy="18" r="1.9" fill="currentColor" />
+    <a class="brand" href="./" aria-label="Arcade — на главную">
+      <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="61" height="61" rx="15" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="2" style="color:#c9a35a" />
+        <path d="M20 44V26a6 6 0 0 1 6-6h12a6 6 0 0 1 6 6v18M20 35h24" fill="none" stroke="#e6cf9a" stroke-width="3.4" stroke-linecap="round" />
+        <circle cx="26.5" cy="28.5" r="2.6" fill="#e6cf9a" />
+        <circle cx="37.5" cy="28.5" r="2.6" fill="#e6cf9a" />
       </svg>
       <span class="brand-name">Arcade</span>
     </a>
     <nav class="nav">
       <a href="#games">Игры</a>
       <a href="#support">Поддержать</a>
-      <button class="btn btn-primary btn-small" id="premiumBtn" type="button">Убрать рекламу · 149 ₽</button>
+      <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true" title="Звук">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h3l5-4v14l-5-4H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path id="soundWaves" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="soundLabel">Звук</span>
+      </button>
     </nav>
   </div>
 </header>
 
 <main>
   <div id="home">
-    <section class="hero">
-      <div class="container">
-        <p class="eyebrow">5 игр · без регистрации · бесплатно</p>
-        <h1>Короткие игры для перерыва на пять минут</h1>
-        <p class="lede">Змейка, 2048, Тетрис, Мемори и тест реакции. Всё работает прямо в браузере — на телефоне и на компьютере. Рекорды сохраняются автоматически.</p>
+    <div class="container">
+      <section class="hero">
+        <p class="eyebrow">восемь игр · без регистрации · в одном клике</p>
+        <h1>Игры, сделанные <em>вручную</em></h1>
+        <p>Шутер, гонки, ферма и пять классиков — со звуком, анимацией и вашими рекордами. Графика нарисована с нуля в коде, без стоковых картинок.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#games">Выбрать игру</a>
-          <a class="btn" href="#support">Поддержать проект</a>
+          <a class="btn btn-primary" href="#play/shooter">Начать с шутера</a>
+          <a class="btn" href="#games">Все игры</a>
         </div>
-        <dl class="hero-stats">
-          <div><dt>Игр</dt><dd>5</dd></div>
-          <div><dt>Регистрация</dt><dd>Не нужна</dd></div>
-          <div><dt>Управление</dt><dd>Клавиши и свайпы</dd></div>
-        </dl>
-      </div>
-    </section>
+        <hr class="rule" />
+      </section>
 
-    <section class="section" id="games">
-      <div class="container">
+      <section id="games">
         <div class="section-head">
-          <h2>Выбери игру</h2>
-          <p>Каждая партия — от одной до пяти минут.</p>
+          <h2>Коллекция</h2>
+          <p>Стрелки, WASD или касания — всё работает и на телефоне</p>
         </div>
         <div class="game-grid" id="gameGrid"></div>
-      </div>
-    </section>
+      </section>
 
-    <div class="container">
-      <div class="ad-slot" data-ad-slot="top">
-        <p class="ad-label">Реклама</p>
-        <p class="ad-placeholder">Место под рекламный блок</p>
-      </div>
-    </div>
+      <div class="ad-slot" data-ad-slot="top">рекламный блок</div>
 
-    <section class="section" id="support">
-      <div class="container">
+      <section id="support">
         <div class="section-head">
           <h2>Поддержать проект</h2>
-          <p>Сайт бесплатный и остаётся таким. Поддержка — по желанию.</p>
+          <p>Без подписок и автоплатежей</p>
         </div>
         <div class="support-grid">
-          <div class="card support-card">
-            <span class="tag tag-blue">Premium</span>
-            <h3>Играть без рекламы</h3>
-            <p>Разовый платёж, без подписки. Рекламные блоки исчезают навсегда в этом браузере.</p>
-            <p class="price">149 <span>₽</span></p>
-            <button class="btn btn-primary" id="premiumBtn2" type="button" style="width:100%">Отключить рекламу</button>
+          <div class="card">
+            <h3>Arcade без рекламы</h3>
+            <p class="price">149 ₽</p>
+            <p>Разовый платёж. Рекламные блоки исчезают навсегда в этом браузере.</p>
+            <button class="btn btn-primary" id="premiumBtn" type="button">Отключить рекламу</button>
+            <p class="pay-status" id="payStatus"></p>
           </div>
-          <div class="card support-card">
-            <span class="tag">Донат</span>
-            <h3>Просто сказать спасибо</h3>
-            <p>Любая сумма идёт на хостинг и новые игры. Ничего взамен не обещаю — это добровольно.</p>
-            <div class="donate-row">
+          <div class="card">
+            <h3>Добровольная поддержка</h3>
+            <p>Любая сумма идёт на новые игры и сервер. Оплата картой или SBP через ЮКассу.</p>
+            <div class="shop-row">
               <button class="btn btn-small" type="button" data-donate="100">100 ₽</button>
               <button class="btn btn-small" type="button" data-donate="300">300 ₽</button>
               <button class="btn btn-small" type="button" data-donate="500">500 ₽</button>
             </div>
           </div>
         </div>
-        <p class="pay-status" id="payStatus"></p>
-      </div>
-    </section>
+      </section>
+
+      <div class="ad-slot" data-ad-slot="bottom">рекламный блок</div>
+    </div>
   </div>
 
-  <section class="game-view" id="gameView" hidden>
-    <div class="container">
-      <div class="game-topbar">
-        <button class="btn btn-small" id="backBtn" type="button">‹ Все игры</button>
-        <h2 id="gameTitle"></h2>
-      </div>
-      <div class="game-mount" id="gameMount"></div>
+  <div class="container game-view" id="gameView" hidden>
+    <div class="game-view-head">
+      <h2 id="gameTitle"></h2>
+      <button class="btn btn-small" id="backBtn" type="button">← Все игры</button>
     </div>
-  </section>
+    <div class="game-stage" id="gameMount"></div>
+  </div>
 </main>
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <p>© <span id="year">2026</span> Arcade — мини-игры в браузере.</p>
+    <p>© <span id="year">2026</span> Arcade</p>
     <p class="footer-links">
       <a href="terms.html">Условия</a>
       <a href="privacy.html">Конфиденциальность</a>
@@ -116,7 +105,9 @@
 </footer>
 
 <script src="config.js"></script>
-<script src="js/games.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/games-classic.js"></script>
+<script src="js/games-arcade.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
