@@ -1,46 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="robots" content="noindex" />
-<title>Политика конфиденциальности — Arcade</title>
-<link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-<header class="site-header">
-  <div class="container header-inner">
-    <a class="brand" href="./"><span class="brand-name">Arcade</span></a>
-    <nav class="nav"><a href="./">На главную</a></nav>
-  </div>
-</header>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Политика конфиденциальности — Arcade</title>
+		<meta name="description" content="Какие данные собирает сайт Arcade и зачем." />
+		<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+		<link rel="apple-touch-icon" href="favicon.svg" />
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="container header-inner">
+				<a class="brand" href="index.html" aria-label="Arcade — на главную">
+					<svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+						<rect x="1.5" y="1.5" width="61" height="61" rx="15" fill="none" stroke="#c9a35a" stroke-opacity=".35" stroke-width="2" />
+						<path d="M20 44V26a6 6 0 0 1 6-6h12a6 6 0 0 1 6 6v18M20 35h24" fill="none" stroke="#e6cf9a" stroke-width="3.4" stroke-linecap="round" />
+						<circle cx="26.5" cy="28.5" r="2.6" fill="#e6cf9a" />
+						<circle cx="37.5" cy="28.5" r="2.6" fill="#e6cf9a" />
+					</svg>
+					<span class="brand-name">Arcade</span>
+				</a>
+				<nav class="nav"><a class="btn btn-small" href="index.html">На главную</a></nav>
+			</div>
+		</header>
 
-<main class="legal">
-  <h1>Политика конфиденциальности</h1>
-  <p class="note">Замените [email] и [ИНН] на свои данные.</p>
+		<main class="legal">
+			<h1>Политика конфиденциальности</h1>
+			<p class="note">Мы собираем минимум данных — только то, без чего сайт не работает.</p>
 
-  <h2>1. Какие данные мы собираем</h2>
-  <ul>
-    <li>Игровые рекорды и признак отключённой рекламы — в localStorage вашего браузера. На сервер они не передаются.</li>
-    <li>Идентификатор платежа — только если вы оформляете оплату.</li>
-    <li>Обезличенная статистика и рекламные cookie — со стороны Яндекса, если подключён рекламный блок.</li>
-  </ul>
+			<h2>1. Данные в браузере</h2>
+			<p>Рекорды, прогресс фермы и настройка звука хранятся только в localStorage вашего браузера и не передаются на сервер.</p>
 
-  <h2>2. Третьи лица</h2>
-  <p>Оплата — ЮКасса (ООО «ЮМани»). Реклама — Рекламная сеть Яндекса. У каждого из них свои политики обработки данных.</p>
+			<h2>2. Платежи</h2>
+			<p>При оплате данные карты вводятся на стороне ЮКassa. Мы не видим и не храним номер карты — только идентификатор и статус платежа.</p>
 
-  <h2>3. Как удалить данные</h2>
-  <p>Очистите данные сайта в настройках браузера — рекорды и признак покупки будут удалены.</p>
+			<h2>3. Реклама и аналитика</h2>
+			<p>Если подключены рекламные или аналитические блоки (РСЯ, Метрика), они могут использовать файлы cookie согласно своим политикам.</p>
 
-  <h2>4. Контакты</h2>
-  <p>Владелец сайта: [ИНН]. Почта: [email].</p>
-</main>
+			<h2>4. Удаление данных</h2>
+			<p>Локальные данные удаляются очисткой данных сайта в браузере. Для удаления записей о платежах напишите владельцу сайта.</p>
+		</main>
 
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <p>© Arcade</p>
-    <p class="footer-links"><a href="./">Главная</a><a href="terms.html">Условия</a></p>
-  </div>
-</footer>
-</body>
+		<footer class="site-footer">
+			<div class="container footer-inner">
+				<p>Arcade</p>
+				<p class="footer-links"><a href="index.html">Главная</a><a href="terms.html">Соглашение</a></p>
+			</div>
+		</footer>
+	</body>
 </html>
