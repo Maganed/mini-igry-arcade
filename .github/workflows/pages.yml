@@ -26,7 +26,7 @@ jobs:
       - name: Prepare site directory
         run: |
           mkdir -p _site
-          cp -r index.html styles.css config.js js privacy.html terms.html robots.txt _site/
+          cp -r index.html styles.css config.js js privacy.html terms.html robots.txt sitemap.xml _site/
           touch _site/.nojekyll
 
       # enablement: true — включает GitHub Pages автоматически, если он ещё не включён
