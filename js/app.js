@@ -1,62 +1,97 @@
-/* Оболочка: каталог игр, роутинг, реклама и оплата. */
+/* Оболочка: каталог игр, роутинг, звук, реклама и оплата. */
 ;(function () {
 	"use strict"
-
 	var CFG = window.APP_CONFIG || {}
-	var GAMES = window.GAMES || {}
-	var ORDER = ["snake", "g2048", "tetris", "memory", "reaction"]
-
-	var home = document.getElementById("home")
-	var view = document.getElementById("gameView")
-	var mount = document.getElementById("gameMount")
-	var titleEl = document.getElementById("gameTitle")
-	var gridEl = document.getElementById("gameGrid")
-	var statusEl = document.getElementById("payStatus")
-	var cleanup = null
-
-	var BEST_KEYS = {
-		snake: ["arcade:snake:best", "рекорд"],
-		g2048: ["arcade:2048:best", "рекорд"],
-		tetris: ["arcade:tetris:best", "рекорд"],
-		memory: ["arcade:memory:best", "лучшее — ходов"],
-		reaction: ["arcade:reaction:best", "лучший — мс"],
+	var S = window.SFX
+	var ORDER = ["shooter", "racing", "farm", "tetris", "g2048", "snake", "memory", "reaction"]
+	var BEST = {
+		shooter: { key: "arcade:shooter:best", label: "Рекорд" },
+		racing: { key: "arcade:racing:best", label: "Рекорд" },
+		farm: { key: "arcade:farm:best", label: "Заработано" },
+		tetris: { key: "arcade:tetris:best", label: "Рекорд" },
+		g2048: { key: "arcade:2048:best", label: "Рекорд" },
+		snake: { key: "arcade:snake:best", label: "Рекорд" },
+		memory: { key: "arcade:memory:best", label: "Лучшее" },
+		reaction: { key: "arcade:reaction:best", label: "Лучшее" },
 	}
 
-	function bestLabel(id) {
-		var info = BEST_KEYS[id]
-		if (!info) return ""
-		var v = Number(localStorage.getItem(info[0]) || 0)
+	var gridEl = document.getElementById("gameGrid")
+	var homeEl = document.getElementById("home")
+	var viewEl = document.getElementById("gameView")
+	var mountEl = document.getElementById("gameMount")
+	var titleEl = document.getElementById("gameTitle")
+	var backBtn = document.getElementById("backBtn")
+	var yearEl = document.getElementById("year")
+	var soundBtn = document.getElementById("soundBtn")
+	var soundLabel = document.getElementById("soundLabel")
+	var cleanup = null
+
+	if (yearEl) yearEl.textContent = String(new Date().getFullYear())
+
+	function syncSound() {
+		if (!soundBtn) return
+		var on = S.enabled
+		soundBtn.setAttribute("aria-pressed", on ? "true" : "false")
+		soundBtn.classList.toggle("is-off", !on)
+		if (soundLabel) soundLabel.textContent = on ? "Звук" : "Без звука"
+	}
+	if (soundBtn) {
+		soundBtn.addEventListener("click", function () {
+			S.unlock()
+			S.toggle()
+			syncSound()
+			if (S.enabled) S.click()
+		})
+		syncSound()
+	}
+	document.addEventListener(
+		"pointerdown",
+		function () {
+			S.unlock()
+		},
+		{ once: true },
+	)
+
+	function bestText(id) {
+		var b = BEST[id]
+		if (!b) return "Ещё не играли"
+		var v = Number(localStorage.getItem(b.key) || 0)
 		if (!v) return "Ещё не играли"
-		return "Ваш " + info[1] + ": " + v
+		return b.label + ": " + v
 	}
 
 	function renderGrid() {
 		if (!gridEl) return
 		gridEl.innerHTML = ""
 		ORDER.forEach(function (id) {
-			var g = GAMES[id]
+			var g = window.GAMES[id]
 			if (!g) return
-			var card = document.createElement("button")
-			card.type = "button"
-			card.className = "card game-card"
-			card.innerHTML =
-				'<span class="game-card-art art-' +
-				g.accent +
-				'">' +
+			var a = document.createElement("a")
+			a.className = "game-card"
+			a.href = "#play/" + id
+			a.innerHTML =
+				'<span class="game-card-art" aria-hidden="true">' +
 				g.art +
-				'</span><span class="game-card-body"><h3>' +
+				"</span>" +
+				'<span class="game-card-body">' +
+				'<span class="game-card-head"><span class="game-card-title">' +
 				g.title +
-				"</h3><p>" +
+				"</span>" +
+				(g.tag ? '<span class="tag">' + g.tag + "</span>" : "") +
+				"</span>" +
+				'<span class="game-card-text">' +
 				g.tagline +
-				'</p><span class="game-card-meta">' +
+				"</span>" +
+				'<span class="game-card-meta"><span>' +
 				g.meta +
-				" · " +
-				bestLabel(id) +
-				"</span></span>"
-			card.addEventListener("click", function () {
-				location.hash = "#play/" + id
+				"</span><span>" +
+				bestText(id) +
+				"</span></span></span>"
+			a.addEventListener("click", function () {
+				S.unlock()
+				S.click()
 			})
-			gridEl.appendChild(card)
+			gridEl.appendChild(a)
 		})
 	}
 
@@ -67,71 +102,61 @@
 			} catch (e) {}
 			cleanup = null
 		}
-		mount.innerHTML = ""
-		view.hidden = true
-		home.hidden = false
-		renderGrid()
+		if (mountEl) mountEl.innerHTML = ""
 	}
 
 	function openGame(id) {
-		var g = GAMES[id]
-		if (!g) return closeGame()
-		if (cleanup) {
-			try {
-				cleanup()
-			} catch (e) {}
-			cleanup = null
-		}
-		home.hidden = true
-		view.hidden = false
+		var g = window.GAMES[id]
+		if (!g) return showHome()
+		closeGame()
+		homeEl.hidden = true
+		viewEl.hidden = false
 		titleEl.textContent = g.title
-		mount.innerHTML = ""
-		cleanup = g.mount(mount) || null
-		window.scrollTo({ top: 0, behavior: "auto" })
+		document.title = g.title + " — Arcade"
+		cleanup = g.mount(mountEl) || null
+		window.scrollTo(0, 0)
+	}
+
+	function showHome() {
+		closeGame()
+		viewEl.hidden = true
+		homeEl.hidden = false
+		document.title = "Arcade — премиальные мини-игры"
+		renderGrid()
 	}
 
 	function route() {
-		var m = /^#play\/(.+)$/.exec(location.hash)
+		var m = (location.hash || "").match(/^#play\/([a-z0-9]+)$/i)
 		if (m) openGame(m[1])
-		else closeGame()
+		else showHome()
 	}
 
-	var backBtn = document.getElementById("backBtn")
 	if (backBtn)
 		backBtn.addEventListener("click", function () {
-			location.hash = ""
+			S.click()
+			if (location.hash) location.hash = ""
+			else showHome()
 		})
-
 	window.addEventListener("hashchange", route)
 
-	/* ---------- Реклама ---------- */
-	function isPremium() {
-		return !!localStorage.getItem("arcade:premium:key")
-	}
-
-	function renderAds() {
-		var slots = document.querySelectorAll("[data-ad-slot]")
-		if (isPremium()) {
-			slots.forEach(function (s) {
-				s.remove()
-			})
-			return
-		}
+	function initAds() {
 		var ads = CFG.ads || {}
-		var map = { top: ads.blockIdTop, bottom: ads.blockIdBottom }
+		var slots = document.querySelectorAll("[data-ad-slot]")
 		var any = false
 		slots.forEach(function (slot) {
-			var blockId = map[slot.getAttribute("data-ad-slot")]
+			var which = slot.getAttribute("data-ad-slot")
+			var blockId = which === "top" ? ads.blockIdTop : ads.blockIdBottom
 			if (!blockId) return
 			any = true
-			var box = document.createElement("div")
-			box.id = "yandex_rtb_" + blockId
+			var holder = document.createElement("div")
+			holder.id = "yandex_rtb_" + blockId
 			slot.innerHTML = ""
-			slot.appendChild(box)
+			slot.appendChild(holder)
 			window.yaContextCb = window.yaContextCb || []
 			window.yaContextCb.push(function () {
-				if (window.Ya && window.Ya.Context)
-					window.Ya.Context.AdvManager.render({ blockId: blockId, renderTo: box.id })
+				try {
+					window.Ya.Context.AdvManager.render({ blockId: blockId, renderTo: holder.id })
+				} catch (e) {}
 			})
 		})
 		if (!any) return
@@ -141,84 +166,53 @@
 		document.head.appendChild(s)
 	}
 
-	/* ---------- Оплата ---------- */
-	function setStatus(text) {
-		if (statusEl) statusEl.textContent = text || ""
+	var payStatus = document.getElementById("payStatus")
+	function setPay(text, kind) {
+		if (!payStatus) return
+		payStatus.textContent = text
+		payStatus.className = "pay-status" + (kind ? " is-" + kind : "")
 	}
 
-	function pay(kind, amount) {
+	function pay(amount, label) {
 		if (!CFG.apiBase) {
-			setStatus("Оплата ещё не подключена: укажите apiBase в config.js и запустите сервер из папки server.")
+			setPay("Платёжный сервер пока не подключён. Заполните apiBase в config.js после запуска сервера.", "warn")
 			return
 		}
-		setStatus("Создаём платёж…")
+		setPay("Создаём платёж…")
 		fetch(CFG.apiBase.replace(/\/$/, "") + "/api/payments", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ kind: kind, amount: amount, returnUrl: location.origin + location.pathname }),
+			body: JSON.stringify({ amount: amount, description: label, returnUrl: location.href }),
 		})
-			.then(function (r) {
-				return r.json()
+			.then(function (res) {
+				return res.json().then(function (data) {
+					if (!res.ok || !data.confirmationUrl) throw new Error(data.error || "Ошибка платежа")
+					return data
+				})
 			})
 			.then(function (data) {
-				if (data && data.confirmationUrl) {
-					if (data.id) localStorage.setItem("arcade:payment:last", data.id)
-					location.href = data.confirmationUrl
-				} else {
-					setStatus("Не удалось создать платёж. Попробуйте позже.")
-				}
+				if (data.paymentKey) localStorage.setItem("arcade:payment:last", data.paymentKey)
+				setPay("Переходим к оплате…", "ok")
+				location.href = data.confirmationUrl
 			})
-			.catch(function () {
-				setStatus("Сервер оплаты недоступен.")
+			.catch(function (e) {
+				setPay("Не удалось создать платёж: " + e.message, "warn")
 			})
 	}
 
-	function checkLastPayment() {
-		var id = localStorage.getItem("arcade:payment:last")
-		if (!id || !CFG.apiBase) return
-		fetch(CFG.apiBase.replace(/\/$/, "") + "/api/payments/" + encodeURIComponent(id))
-			.then(function (r) {
-				return r.json()
-			})
-			.then(function (data) {
-				if (!data) return
-				if (data.status === "succeeded") {
-					localStorage.removeItem("arcade:payment:last")
-					if (data.kind === "premium") {
-						localStorage.setItem("arcade:premium:key", id)
-						setStatus("Спасибо! Реклама отключена.")
-						renderAds()
-					} else {
-						setStatus("Спасибо за поддержку!")
-					}
-				}
-			})
-			.catch(function () {})
-	}
-
-	;[document.getElementById("premiumBtn"), document.getElementById("premiumBtn2")].forEach(function (b) {
-		if (!b) return
-		if (isPremium()) {
-			b.disabled = true
-			b.textContent = "Реклама отключена"
-			return
-		}
-		b.addEventListener("click", function () {
-			pay("premium", CFG.premiumPriceRub || 149)
+	var premiumBtn = document.getElementById("premiumBtn")
+	if (premiumBtn)
+		premiumBtn.addEventListener("click", function () {
+			S.click()
+			pay(CFG.premiumPriceRub || 149, "Arcade Premium")
 		})
-	})
-
 	document.querySelectorAll("[data-donate]").forEach(function (b) {
 		b.addEventListener("click", function () {
-			pay("donation", Number(b.getAttribute("data-donate")))
+			S.click()
+			pay(Number(b.getAttribute("data-donate")), "Поддержка проекта")
 		})
 	})
 
-	var yearEl = document.getElementById("year")
-	if (yearEl) yearEl.textContent = String(new Date().getFullYear())
-
-	renderGrid()
-	renderAds()
+	initAds()
 	route()
-	checkLastPayment()
 })()
