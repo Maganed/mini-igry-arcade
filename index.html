@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arcade — бесплатные мини-игры в браузере</title>
+<meta name="description" content="Бесплатные мини-игры онлайн без регистрации: Змейка, Тест реакции, Мемори. Играй в браузере с телефона и компьютера." />
+<link rel="canonical" href="https://example.ru/" />
+<meta property="og:title" content="Arcade — бесплатные мини-игры в браузере" />
+<meta property="og:description" content="Змейка, Тест реакции, Мемори. Без регистрации, прямо в браузере." />
+<meta property="og:type" content="website" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="logo" href="/">🕹 <b>Arcade</b></a>
+    <nav class="tabs" id="tabs">
+      <button class="tab is-active" data-view="snake">Змейка</button>
+      <button class="tab" data-view="reaction">Реакция</button>
+      <button class="tab" data-view="memory">Мемори</button>
+    </nav>
+    <button class="btn btn-premium" id="premiumBtn">Убрать рекламу — 149 ₽</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- Рекламный блок 1 (верхний). Подставь свой ID блока в config.js -->
+  <div class="ad ad-top" id="ad-top" data-ad-slot="top"></div>
+
+  <main>
+    <section class="view is-active" id="view-snake">
+      <div class="panel">
+        <div class="panel-head">
+          <h1>Змейка</h1>
+          <div class="score">Счёт: <b id="snakeScore">0</b> · Рекорд: <b id="snakeBest">0</b></div>
+        </div>
+        <canvas id="snakeCanvas" width="420" height="420"></canvas>
+        <div class="controls">
+          <button class="btn" id="snakeStart">Играть</button>
+          <span class="hint">Управление: стрелки / WASD / свайпы</span>
+        </div>
+        <div class="pad" id="snakePad">
+          <button data-dir="up">▲</button>
+          <button data-dir="left">◀</button>
+          <button data-dir="down">▼</button>
+          <button data-dir="right">▶</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-reaction">
+      <div class="panel">
+        <div class="panel-head">
+          <h1>Тест реакции</h1>
+          <div class="score">Лучшее: <b id="reactionBest">—</b></div>
+        </div>
+        <div class="reaction-box" id="reactionBox">Нажми, чтобы начать</div>
+        <p class="hint">Жди зелёного цвета и жми как можно быстрее. Раннее нажатие — фальстарт.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-memory">
+      <div class="panel">
+        <div class="panel-head">
+          <h1>Мемори</h1>
+          <div class="score">Ходы: <b id="memoryMoves">0</b> · Лучшее: <b id="memoryBest">—</b></div>
+        </div>
+        <div class="memory-grid" id="memoryGrid"></div>
+        <div class="controls"><button class="btn" id="memoryRestart">Новая игра</button></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Рекламный блок 2 (нижний) -->
+  <div class="ad ad-bottom" id="ad-bottom" data-ad-slot="bottom"></div>
+
+  <section class="support">
+    <h2>Поддержать проект</h2>
+    <p>Сайт бесплатный. Если нравится — можно поддержать разработку любой суммой.</p>
+    <div class="donates">
+      <button class="btn btn-ghost" data-donate="100">100 ₽</button>
+      <button class="btn btn-ghost" data-donate="300">300 ₽</button>
+      <button class="btn btn-ghost" data-donate="500">500 ₽</button>
+      <button class="btn btn-ghost" data-donate="1000">1000 ₽</button>
+    </div>
+    <p class="hint" id="payStatus"></p>
+  </section>
+
+  <footer class="foot">
+    <p>© <span id="year"></span> Arcade. Мини-игры в браузере.</p>
+    <p class="hint">Оплата проходит через ЮKassa. <a href="/terms.html">Условия</a> · <a href="/privacy.html">Политика конфиденциальности</a></p>
+  </footer>
+</div>
+
+<script src="config.js"></script>
+<script src="js/games.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
