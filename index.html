@@ -3,95 +3,117 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Arcade — бесплатные мини-игры в браузере</title>
-<meta name="description" content="Бесплатные мини-игры онлайн без регистрации: Змейка, Тест реакции, Мемори. Играй в браузере с телефона и компьютера." />
+<title>Arcade — короткие игры в браузере</title>
+<meta name="description" content="Пять мини-игр без регистрации: Змейка, 2048, Тетрис, Мемори и тест реакции. Играйте на телефоне или компьютере." />
 <link rel="canonical" href="https://maganed.github.io/mini-igry-arcade/" />
-<meta property="og:title" content="Arcade — бесплатные мини-игры в браузере" />
-<meta property="og:description" content="Змейка, Тест реакции, Мемори. Без регистрации, прямо в браузере." />
-<meta property="og:type" content="website" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<header class="top">
-  <div class="wrap top-inner">
-    <a class="logo" href="./">🕹 <b>Arcade</b></a>
-    <nav class="tabs" id="tabs">
-      <button class="tab is-active" data-view="snake">Змейка</button>
-      <button class="tab" data-view="reaction">Реакция</button>
-      <button class="tab" data-view="memory">Мемори</button>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="./">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="1.5" y="6.5" width="29" height="19" rx="6" fill="none" stroke="currentColor" stroke-width="2" />
+        <path d="M10 13v6M7 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        <circle cx="21.5" cy="14" r="1.9" fill="currentColor" />
+        <circle cx="25" cy="18" r="1.9" fill="currentColor" />
+      </svg>
+      <span class="brand-name">Arcade</span>
+    </a>
+    <nav class="nav">
+      <a href="#games">Игры</a>
+      <a href="#support">Поддержать</a>
+      <button class="btn btn-primary btn-small" id="premiumBtn" type="button">Убрать рекламу · 149 ₽</button>
     </nav>
-    <button class="btn btn-premium" id="premiumBtn">Убрать рекламу — 149 ₽</button>
   </div>
 </header>
 
-<div class="wrap">
-  <!-- Рекламный блок 1 (верхний). Подставь свой ID блока в config.js -->
-  <div class="ad ad-top" id="ad-top" data-ad-slot="top"></div>
-
-  <main>
-    <section class="view is-active" id="view-snake">
-      <div class="panel">
-        <div class="panel-head">
-          <h1>Змейка</h1>
-          <div class="score">Счёт: <b id="snakeScore">0</b> · Рекорд: <b id="snakeBest">0</b></div>
+<main>
+  <div id="home">
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">5 игр · без регистрации · бесплатно</p>
+        <h1>Короткие игры для перерыва на пять минут</h1>
+        <p class="lede">Змейка, 2048, Тетрис, Мемори и тест реакции. Всё работает прямо в браузере — на телефоне и на компьютере. Рекорды сохраняются автоматически.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#games">Выбрать игру</a>
+          <a class="btn" href="#support">Поддержать проект</a>
         </div>
-        <canvas id="snakeCanvas" width="420" height="420"></canvas>
-        <div class="controls">
-          <button class="btn" id="snakeStart">Играть</button>
-          <span class="hint">Управление: стрелки / WASD / свайпы</span>
-        </div>
-        <div class="pad" id="snakePad">
-          <button data-dir="up">▲</button>
-          <button data-dir="left">◀</button>
-          <button data-dir="down">▼</button>
-          <button data-dir="right">▶</button>
-        </div>
+        <dl class="hero-stats">
+          <div><dt>Игр</dt><dd>5</dd></div>
+          <div><dt>Регистрация</dt><dd>Не нужна</dd></div>
+          <div><dt>Управление</dt><dd>Клавиши и свайпы</dd></div>
+        </dl>
       </div>
     </section>
 
-    <section class="view" id="view-reaction">
-      <div class="panel">
-        <div class="panel-head">
-          <h1>Тест реакции</h1>
-          <div class="score">Лучшее: <b id="reactionBest">—</b></div>
+    <section class="section" id="games">
+      <div class="container">
+        <div class="section-head">
+          <h2>Выбери игру</h2>
+          <p>Каждая партия — от одной до пяти минут.</p>
         </div>
-        <div class="reaction-box" id="reactionBox">Нажми, чтобы начать</div>
-        <p class="hint">Жди зелёного цвета и жми как можно быстрее. Раннее нажатие — фальстарт.</p>
+        <div class="game-grid" id="gameGrid"></div>
       </div>
     </section>
 
-    <section class="view" id="view-memory">
-      <div class="panel">
-        <div class="panel-head">
-          <h1>Мемори</h1>
-          <div class="score">Ходы: <b id="memoryMoves">0</b> · Лучшее: <b id="memoryBest">—</b></div>
-        </div>
-        <div class="memory-grid" id="memoryGrid"></div>
-        <div class="controls"><button class="btn" id="memoryRestart">Новая игра</button></div>
+    <div class="container">
+      <div class="ad-slot" data-ad-slot="top">
+        <p class="ad-label">Реклама</p>
+        <p class="ad-placeholder">Место под рекламный блок</p>
       </div>
-    </section>
-  </main>
-
-  <!-- Рекламный блок 2 (нижний) -->
-  <div class="ad ad-bottom" id="ad-bottom" data-ad-slot="bottom"></div>
-
-  <section class="support">
-    <h2>Поддержать проект</h2>
-    <p>Сайт бесплатный. Если нравится — можно поддержать разработку любой суммой.</p>
-    <div class="donates">
-      <button class="btn btn-ghost" data-donate="100">100 ₽</button>
-      <button class="btn btn-ghost" data-donate="300">300 ₽</button>
-      <button class="btn btn-ghost" data-donate="500">500 ₽</button>
-      <button class="btn btn-ghost" data-donate="1000">1000 ₽</button>
     </div>
-    <p class="hint" id="payStatus"></p>
-  </section>
 
-  <footer class="foot">
-    <p>© <span id="year"></span> Arcade. Мини-игры в браузере.</p>
-    <p class="hint">Оплата проходит через ЮKassa. <a href="terms.html">Условия</a> · <a href="privacy.html">Политика конфиденциальности</a></p>
-  </footer>
-</div>
+    <section class="section" id="support">
+      <div class="container">
+        <div class="section-head">
+          <h2>Поддержать проект</h2>
+          <p>Сайт бесплатный и остаётся таким. Поддержка — по желанию.</p>
+        </div>
+        <div class="support-grid">
+          <div class="card support-card">
+            <span class="tag tag-blue">Premium</span>
+            <h3>Играть без рекламы</h3>
+            <p>Разовый платёж, без подписки. Рекламные блоки исчезают навсегда в этом браузере.</p>
+            <p class="price">149 <span>₽</span></p>
+            <button class="btn btn-primary" id="premiumBtn2" type="button" style="width:100%">Отключить рекламу</button>
+          </div>
+          <div class="card support-card">
+            <span class="tag">Донат</span>
+            <h3>Просто сказать спасибо</h3>
+            <p>Любая сумма идёт на хостинг и новые игры. Ничего взамен не обещаю — это добровольно.</p>
+            <div class="donate-row">
+              <button class="btn btn-small" type="button" data-donate="100">100 ₽</button>
+              <button class="btn btn-small" type="button" data-donate="300">300 ₽</button>
+              <button class="btn btn-small" type="button" data-donate="500">500 ₽</button>
+            </div>
+          </div>
+        </div>
+        <p class="pay-status" id="payStatus"></p>
+      </div>
+    </section>
+  </div>
+
+  <section class="game-view" id="gameView" hidden>
+    <div class="container">
+      <div class="game-topbar">
+        <button class="btn btn-small" id="backBtn" type="button">‹ Все игры</button>
+        <h2 id="gameTitle"></h2>
+      </div>
+      <div class="game-mount" id="gameMount"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>© <span id="year">2026</span> Arcade — мини-игры в браузере.</p>
+    <p class="footer-links">
+      <a href="terms.html">Условия</a>
+      <a href="privacy.html">Конфиденциальность</a>
+    </p>
+  </div>
+</footer>
 
 <script src="config.js"></script>
 <script src="js/games.js"></script>
